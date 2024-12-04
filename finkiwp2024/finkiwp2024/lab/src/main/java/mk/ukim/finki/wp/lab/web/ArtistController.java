@@ -27,6 +27,7 @@ public class ArtistController {
 
     @GetMapping
     public String listArtists(Model model) {
+        //model.addAttribute(trackId);
         model.addAttribute("artists", artistService.listArtists());
         return "artistsList"; // Refers to artistsList.html template
     }

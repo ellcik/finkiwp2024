@@ -42,7 +42,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public void deleteByTrackId(String trackId) {
-        DataHolder.songs.removeIf(song -> song.getTrackId().equals(trackId));
+        DataHolder.songs.removeIf(song -> song.getId().equals(Long.parseLong(trackId)));
 
     }
 

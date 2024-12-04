@@ -65,7 +65,7 @@ public class SongController {
         }
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteSong(@PathVariable String id) {
         songService.deleteByTrackId(id);
         return "redirect:/songs";

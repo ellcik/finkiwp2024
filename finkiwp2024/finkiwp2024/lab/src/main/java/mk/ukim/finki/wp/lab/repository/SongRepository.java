@@ -17,12 +17,12 @@ public class SongRepository {
 
     public Song findByTrackId(String trackId){
         return DataHolder.songs.stream()
-                .filter(s->s.getTrackId().equals(trackId))
+                .filter(s->s.getId().equals(Long.parseLong(trackId)))
                 .findFirst().orElse(null);
     }
     public Artist addArtistToSong(Artist artist, Song song){
         for (Song s : DataHolder.songs) {
-            if (s.getTrackId().equals(song.getTrackId())) {
+            if (s.getId().equals(song.getId())) {
                 s.getPerformers().add(artist);
                 return artist;
             }

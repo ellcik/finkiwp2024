@@ -1,55 +1,46 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Song {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    String trackId;
-    String title;
-    String genre;
-    int releaseYear;
-    List<Artist> performers;
-    private Album album;
 
-    public Song(String trackId, String title, String genre, int releaseYear,Album album) {
-        this.id= (long) (Math.random()*1000);
+    String trackId;
+
+    String title;
+
+    String genre;
+
+    int releaseYear;
+
+    @ManyToMany
+    List<Artist> performers;
+
+    @ManyToOne
+    Album album;
+
+    public Song( String trackId,String title, String genre, int releaseYear,Album album) {
         this.trackId = trackId;
         this.title = title;
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.performers =  new ArrayList<>();
         this.album=album;
-    }
-
-    public String getTrackId() {
-        return trackId;
-    }
-
-    public List<Artist> getPerformers() {
-        return performers;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public int getReleaseYear() {
-        return releaseYear;
-    }
-
-    public Album getAlbum() {
-        return album;
     }
 
     public void setAlbum(Album album) {

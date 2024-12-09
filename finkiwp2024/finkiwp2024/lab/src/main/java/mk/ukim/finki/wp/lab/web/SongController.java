@@ -1,25 +1,23 @@
 package mk.ukim.finki.wp.lab.web;
 
-import mk.ukim.finki.wp.lab.model.Album;
 import mk.ukim.finki.wp.lab.model.Song;
-import mk.ukim.finki.wp.lab.repository.AlbumRepository;
+import mk.ukim.finki.wp.lab.repository.inmemory.InMemoryAlbumRepository;
 import mk.ukim.finki.wp.lab.service.AlbumService;
 import mk.ukim.finki.wp.lab.service.SongService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @Controller
 @RequestMapping("/songs")
 public class SongController {
 
     private final SongService songService;
-    private final AlbumRepository albumRepository;
+    private final AlbumService albumService;
 
-    public SongController(SongService songService, AlbumRepository albumRepository) {
+    public SongController(SongService songService, AlbumService albumService) {
         this.songService = songService;
-        this.albumRepository = albumRepository;
+        this.albumService = albumService;
     }
 
     @GetMapping(path={"/listSongs", ""})
@@ -30,8 +28,8 @@ public class SongController {
 
     @GetMapping("/add-form")
     public String getAddSongPage(Model model) {
-        model.addAttribute("albums", albumRepository.findAll());
-        model.addAttribute("song", null);
+        model.addAttribute("albums", albumService.findAll());
+        model.addAttribute("song", new Song());
         return "add-song";
     }
 
@@ -57,7 +55,7 @@ public class SongController {
         try {
             Song song = songService.findByTrackId(id);
             model.addAttribute("song", song);
-            model.addAttribute("albums", albumRepository.findAll());
+            model.addAttribute("albums", albumService.findAll());
             return "add-song";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Song not found.");
@@ -66,7 +64,7 @@ public class SongController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteSong(@PathVariable String id) {
+    public String deleteSong(@PathVariable Long id) {
         songService.deleteByTrackId(id);
         return "redirect:/songs";
     }
